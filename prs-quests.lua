@@ -22,7 +22,7 @@ function clearContainers()
   questContainerTable = {}
 end
 
-local QUEST_LABEL_HEIGHT = 100
+local QUEST_LABEL_HEIGHT = 80
 local QUEST_GAP = 0
 
 function getCechoColor(string)
@@ -49,8 +49,10 @@ scrollContainer =
   Geyser.Container:new(
     {
       name = "questScrollContainer",
-      width = "90%",
-      height = "90%"
+      x = 0,
+      y = 0,
+      width = "100%",
+      height = "100%"
     },
     GUI.tabwindow2.Questscenter
   )
@@ -60,6 +62,8 @@ questBox =
   Geyser.ScrollBox:new(
     {
       name = "questScrollBox",
+      x = 0,
+      y = 0,
       height = "100%",
       width = "100%"
     },
@@ -69,15 +73,12 @@ questBox =
 function displayQuest(questNum)
   local quest = gmcp.Char.quests[questNum]
 
-  if questContainerTable[questNum] == nil then
-    createNewQuestLabel(questNum)
-  end
+  createNewQuestLabel(questNum)
 
   questContainerTable[questNum]:show()
   questBox:add(questContainerTable[questNum])
 
   if quest.amount > 0 then
-    addGaugeToQuestLabel(questNum)
     questContainerTable[questNum].progressBox:show()
   else
     questContainerTable[questNum].progressBox:hide()
@@ -87,30 +88,32 @@ function displayQuest(questNum)
 end
 
 function createNewQuestLabel(questNum)
-  table.insert(
-    questContainerTable,
-    Geyser.Label:new(
-      {
-        name = "questName" .. questNum,
-        x = 0,
-        y = (QUEST_LABEL_HEIGHT + QUEST_GAP) * (questNum - 1),
-        height = QUEST_LABEL_HEIGHT,
-        width = "93%"
-      },
-      questBox
+  if questContainerTable[questNum] == nil then
+    table.insert(
+      questContainerTable,
+      Geyser.Label:new(
+        {
+          name = "questName" .. questNum,
+          x = 0,
+          y = (QUEST_LABEL_HEIGHT + QUEST_GAP) * (questNum - 1),
+          height = QUEST_LABEL_HEIGHT,
+          width = "100%-20px"
+        },
+        questBox
+      )
     )
-  )
-  questContainerTable[questNum]:setFontSize(14)
+  end
   questContainerTable[questNum]:setStyleSheet(
     [[
-      border-width: 1px;
-      border-color: black;
-      border-style: solid;
-      border-right: none;
-      border-left: none;
-      background-color: #222;
-      padding: 10px;
-    ]]
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    border-right: none;
+    border-left: none;
+    background-color: #222;
+    padding: 10px;
+    font-size: 12px;
+  ]]
   )
 
   addGaugeToQuestLabel(questNum)
@@ -125,10 +128,10 @@ function addGaugeToQuestLabel(questNum)
     Geyser.HBox:new(
       {
         name = "questProgressBox" .. questNum,
-        x = 12,
+        x = 15,
         y = "65%",
         height = 15,
-        width = "95%"
+        width = "100%-30px"
       },
       questContainerTable[questNum]
     )
@@ -159,27 +162,27 @@ function addGaugeToQuestLabel(questNum)
   questContainerTable[questNum].progressBar.front:setStyleSheet(
     string.format(
       [[
-      background-color: %s;
-      border-top: 1px black solid;
-      border-left: 1px black solid;
-      border-bottom: 1px black solid;
-      border-radius: 7;
-      margin-right: 5px;
-      padding: 3px;
-    ]],
+    background-color: %s;
+    border-top: 1px black solid;
+    border-left: 1px black solid;
+    border-bottom: 1px black solid;
+    border-radius: 7;
+    margin-right: 5px;
+    padding: 3px;
+  ]],
       progressColor
     )
   )
   questContainerTable[questNum].progressBar.back:setStyleSheet(
     [[
-      background-color: #444;
-      border-width: 0px;
-      border-color: black;
-      border-style: solid;
-      border-radius: 7;
-      margin-right: 5px;
-      padding: 3px;
-    ]]
+    background-color: #444;
+    border-width: 0px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 7;
+    margin-right: 5px;
+    padding: 3px;
+  ]]
   )
 
   -- create transparent label next to gauge
@@ -193,9 +196,12 @@ function addGaugeToQuestLabel(questNum)
       questContainerTable[questNum].progressBox
     )
   questContainerTable[questNum].progressLabel:echo(c .. " / " .. m)
-  questContainerTable[questNum].progressLabel:setStyleSheet([[
-      background-color: rgba(0,0,0,0%);
-    ]])
+  questContainerTable[questNum].progressLabel:setStyleSheet(
+    [[
+    background-color: rgba(0,0,0,0%);
+    margin-left: 5px;
+  ]]
+  )
 end
 
 function getQuestString(quest)
