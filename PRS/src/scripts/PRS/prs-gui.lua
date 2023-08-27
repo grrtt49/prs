@@ -73,6 +73,16 @@ GUI.left_bottom = Adjustable.Container:new({
     defaultDir = string.format("%s/PRS/settings/", getMudletHomeDir())
 })
 
+GUI.floating_menu = Adjustable.Container:new({
+    name = "floating_menu",
+    x = "35%",
+    y = "25%",
+    height = "50%",
+    width = "30%",
+    adjLabelstyle = "border: 1px solid green;",
+    defaultDir = string.format("%s/PRS/settings/", getMudletHomeDir())
+})
+
 Adjustable.Container:doAll(function(self) -- add connect menu to all adjustable containers 
     self:addConnectMenu()
 end)
@@ -157,6 +167,15 @@ GUI.tabwindow4 = GUI.tabwindow4 or Adjustable.TabWindow:new({
     color2 = "rgb(16,16,20)",
     tabs = {}
 }, GUI.right_bottom)
+
+GUI.floatingMenuWindow = GUI.floatingMenuWindow or Geyser.Label:new({
+  x = 0,
+  y = 0,
+  width = "100%",
+  height = "100%"
+}, GUI.floating_menu)
+GUI.floatingMenuWindow:setStyleSheet([[ background-color: #111111 ]])
+GUI.floating_menu:hide()
 
 -------[ Buttons ]-------------------------------------------------------------
 GUI.buttons = Geyser.HBox:new({
