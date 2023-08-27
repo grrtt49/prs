@@ -609,6 +609,7 @@ function Adjustable.TabWindow:activateTab(tab)
         self[self.current .. "center"]:show()
     end
     self:raiseAll()
+    raiseEvent("tab_activated", tab)
 end
 
 -- deactivates and hides the current active tab
