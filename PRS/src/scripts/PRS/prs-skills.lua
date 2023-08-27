@@ -25,15 +25,6 @@ PRSskills.labels = PRSskills.labels or {}
 local SKILL_LABEL_HEIGHT = 60
 local SKILL_LABEL_NO_BAR_HEIGHT = 30
 
-function isInArray(array, target)
-  for _, value in ipairs(array) do
-    if value == target then
-      return true
-    end
-  end
-  return false
-end
-
 function sortSkills(skills)
   local sorted = {
     weapon = {},
@@ -52,13 +43,13 @@ function sortSkills(skills)
 end
 
 function getSkillCategory(skill)
-  if (isInArray(skill.type, "weapon")) then
+  if (PRSutil.isInArray(skill.type, "weapon")) then
     return "weapon"
-  elseif (isInArray(skill.type, "crafting")) then
+  elseif (PRSutil.isInArray(skill.type, "crafting")) then
     return "crafting"
-  elseif (isInArray(skill.type, "artisan")) then
+  elseif (PRSutil.isInArray(skill.type, "artisan")) then
     return "artisan"
-  elseif (isInArray(skill.type, "learned")) then
+  elseif (PRSutil.isInArray(skill.type, "learned")) then
     return "learned"
   else
     echo("Skill could not be sorted: \n")
