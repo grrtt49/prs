@@ -62,8 +62,18 @@ function organizeAllBattle()
   organizeBattleEntities(good, PRSbattle.rightSideContainer, PRSbattle.goodLabels, PRSbattle.goodBars)
 end
 
+PRSbattle.previousBattlingState = PRSbattle.previousBattlingState or ""
+
 function updateBattlingState()
   local isBattling = gmcp.Char.battle.active
+  if isBattling ~= PRSbattle.previousBattlingState then
+    if isBattling then
+      showBattleTab()
+    else
+      returnToPreviousTab()
+    end
+  end
+  PRSbattle.previousBattlingState = isBattling
   if not isBattling then
     hideAllBattleLabels()
   else
@@ -307,6 +317,26 @@ function getTargetName(name)
   end
   
   return name
+end
+
+PRSbattle.previousBattleTab = PRSbattle.previousBattleTab or ""
+PRSbattle.previousCombatTab = PRSbattle.previousCombatTab or ""
+
+function showBattleTab()
+  local tabName = "Battle"
+  local window = PRSutil.getWindowFromTab(tabName)
+  PRSbattle.previousBattleTab = window.current
+  PRSutil.setTabFromWindow(tabName, window)
+  
+  local combatTabName = "Combat"
+  local combatWindow = PRSutil.getWindowFromTab(combatTabName)
+  PRSbattle.previousCombatTab = combatWindow.current
+  PRSutil.setTabFromWindow(combatTabName, combatWindow)
+end
+
+function returnToPreviousTab()
+  PRSutil.setTab(PRSbattle.previousBattleTab)
+  PRSutil.setTab(PRSbattle.previousCombatTab)
 end
 
 function repositioningContainer(eventName, containerName, width, height, x, y, mouseAction)
