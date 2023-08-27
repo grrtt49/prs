@@ -64,7 +64,7 @@ function createActionButtons(actions, sortedActions)
     PRScombat.buttons[i]:echo(action)
     
     local sendAction = action
-    if isInArray(sortedActions.spells, action) then
+    if PRSutil.isInArray(sortedActions.spells, action) then
       sendAction = "cast " .. action
     end
     

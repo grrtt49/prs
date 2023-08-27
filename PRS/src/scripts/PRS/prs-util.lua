@@ -54,3 +54,40 @@ PRSutil.tableCopy = function (obj, seen)
   for k, v in pairs(obj) do res[PRSutil.tableCopy(k, s)] = PRSutil.tableCopy(v, s) end
   return res
 end
+
+PRSutil.isInArray = function(array, target)
+  for _, value in ipairs(array) do
+    if value == target then
+      return true
+    end
+  end
+  return false
+end
+
+PRSutil.isTabActive = function(tab)
+  local windows = {GUI.tabwindow1, GUI.tabwindow2, GUI.tabwindow3, GUI.tabwindow4}
+  for i, window in ipairs(windows) do
+    if window.current == tab then
+      return true
+    end
+  end
+  return false
+end
+
+PRSutil.getWindowFromTab = function(tab)
+  local windows = {GUI.tabwindow1, GUI.tabwindow2, GUI.tabwindow3, GUI.tabwindow4}
+  for i, window in ipairs(windows) do
+    if PRSutil.isInArray(window.tabs, tab) then
+      return window
+    end
+  end
+  return nil
+end
+
+PRSutil.setTabFromWindow = function(tab, window)
+  window:activateTab(tab)
+end
+
+PRSutil.setTab = function(tab)
+  PRSutil.getWindowFromTab(tab):activateTab(tab)
+end
